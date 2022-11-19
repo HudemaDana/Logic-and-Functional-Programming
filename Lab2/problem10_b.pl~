@@ -1,0 +1,19 @@
+%Mathematical model
+%	alternateSum(L1,...,Ln,Ok)=
+%		| 0, n = 0
+%		| L1- alternateSum(L2,...,Ln,1), Ok=0
+%		| L1+ alternateSum(L2,...Ln,0), Ok=1
+
+alternateSum([],_,0).
+alternateSum([H1|T],Ok,Result):-
+    Ok=:=0,
+    Ok1 is 1,
+    alternateSum(T,Ok1,Result1),
+    Result is Result1 + H1.
+alternateSum([H1|T],Ok,Result):-
+    Ok=:=1,
+    Ok1 is 0,
+    alternateSum(T,Ok1,Result1),
+    Result is Result1 - H1.
+
+

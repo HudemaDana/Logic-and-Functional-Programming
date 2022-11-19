@@ -1,0 +1,9 @@
+%compara 2 numere
+maxValue(A,B,A):-A>=B.
+maxValue(A,B,B):-A<B.
+
+%gaseste maximul intr-o lista
+maxElemList([],-1).
+maxElemList([H|T],Max):-
+    maxElemList(T,Max1),
+    maxValue(H,Max1,Max).

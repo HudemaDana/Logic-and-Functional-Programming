@@ -1,0 +1,19 @@
+gcd(0,X,X):-!.
+gcd(X,0,X):-!.
+gcd(X,X,X):-!.
+gcd(X,Y,R):-
+    X>=Y,
+    X1 is X-Y,
+    gcd(X1,Y,R).
+gcd(X,Y,R):-
+    X<Y,
+    Y1 is Y-X,
+    gcd(X,Y1,R).
+
+gcdList([],Gcd,Gcd).
+gcdList([H|T],Gcd,R):-
+    gcd(H,Gcd,Gcd1),
+    gcdList(T,Gcd1,R).
+
+mainList(L,R):-
+    gcdList(L,0,R).

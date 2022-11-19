@@ -1,0 +1,31 @@
+%elimElem(L,E,R) - elimin elementul e dintr-o lista
+%occurElem(L,E,R) - nr de cate ori apare un nr in lista
+%createNewList(L,R) - creeaza lista de perechi
+
+elimElem(_,[],[]).
+elimElem(E,[H|T],R):-
+    H =:= E,
+    elimElem(E,T,R).
+elimElem(E,[H|T],[H|R]):-
+    H =\= E,
+    elimElem(E,T,R).
+
+
+occurElem(_,[],0).
+occurElem(E,[H|T],R):-
+    H =:= E,
+    occurElem(E,T,R1),
+    R is R1+1.
+occurElem(E,[H|T],R):-
+    H =\= E,
+    occurElem(E,T,R).
+
+createNewList(_,[],[]).
+createNewList(L,[H|_],R):-
+    occurElem(H,L,Nr),
+    elimElem(H,L,Newlist),
+    createNewList(Newlist,Newlist,R1),
+    R = [[H,Nr]|R1].
+
+mainCreate(L,R):-
+    createNewList(L,L,R).

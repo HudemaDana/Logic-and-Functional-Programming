@@ -1,0 +1,3 @@
+﻿  main.cpp
+C:\Users\dllov\OneDrive\Desktop\faculta\sem3\TFL\Lab1\Lab1\problem.h(17,2): warning C4091: 'typedef ': ignored on left of 'Nod' when no variable is declared
+  Lab1.vcxproj -> C:\Users\dllov\OneDrive\Desktop\faculta\sem3\TFL\Lab1\x64\Debug\Lab1.exe

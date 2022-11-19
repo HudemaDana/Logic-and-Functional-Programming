@@ -1,0 +1,20 @@
+%count how many times does it appear in a list
+occurNumber(_,[],0).
+occurNumber(E,[H|T],R):-
+    E =:= H,
+    occurNumber(E,T,R1),
+    R is R1+1.
+occurNumber(E,[H|T],R):-
+    E =\= H,
+    occurNumber(E,T,R).
+
+%i need list A,B and a Result list(if nroccur(A[i],B)==0, il punem in result)
+diffLists([],_,[]).
+diffLists([H|T],B,[H|R]):-
+    occurNumber(H,B,Nr),
+    Nr =:= 0,
+    diffLists(T,B,R).
+diffLists([H|T],B,R):-
+    occurNumber(H,B,Nr),
+    Nr =\= 0,
+    diffLists(T,B,R).

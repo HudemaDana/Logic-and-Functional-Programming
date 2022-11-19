@@ -1,0 +1,25 @@
+%occurElem(L,E,R) - nr de cate ori apare un nr in lista
+%createNewList(L,R) - creeaza lista de perechi
+
+occurElem(_,[],0).
+occurElem(E,[H|T],R):-
+    H =:= E,
+    occurElem(E,T,R1),
+    R is R1+1.
+occurElem(E,[H|T],R):-
+    H =\= E,
+    occurElem(E,T,R).
+
+createNewList(_,[],[]).
+createNewList(L,[H|T],[H|R]):-
+    occurElem(H,L,Nr),
+    Nr =:= 1,
+    createNewList(L,T,R).
+
+createNewList(L,[H|T],R):-
+    occurElem(H,L,Nr),
+    Nr =\= 1,
+    createNewList(L,T,R).
+
+mainCreate(L,R):-
+    createNewList(L,L,R).

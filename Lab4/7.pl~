@@ -1,0 +1,36 @@
+%function to count the number of occurences of 'x' in the list
+countX([],0).
+countX([H|T],R):-
+    H =:= "x",!,
+    countX(T,R1),
+    R is R1+1.
+countX([_|T],R):-
+    countX(T,R).
+
+%function to check if the last digit in a list is 2
+checkLast2([H|[]]):-
+    atomic(H),
+    H=\=2,!.
+checkLast2([_|T]):-
+    checkLast2(T).
+
+%check for each list if has the right format
+checkLists([],[]).
+checkLists([H|T],[H|R]):-
+    checkLast2(H),
+    countX(H,Count),
+    Count=<2,!,
+    checkLists(T,R).
+checkLists([_|T],R):-
+    checkLists(T,R).
+
+%function that generates all possible lists of 4 elem composed from 1,x,2
+generateLists(L,R):-
+    findall([X,Y,Z,T],(member(X,L),member(Y,L),member(Z,L),member(T,L)),R).
+
+%the main function which will return all elements with the given restriction
+restrictedLists(L,R2):-
+    generateLists(L,R1),
+    checkLists(R1,R2).
+
+

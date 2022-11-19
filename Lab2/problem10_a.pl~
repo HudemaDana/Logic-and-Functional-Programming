@@ -1,0 +1,16 @@
+%mathematical model
+%!  checkValley(L1,...,Ln,Ok1,Ok2) =
+%      |      true  , n=1 && Ok1=1 && Ok2=1
+%      |      checkValley(L2,...,Ln,1,0),  n>1 && Ok2=0 && L1>L2
+%      |      checkValley(L2,...,Ln,1,1) , n>1 && Ok1=1 && L1<=L2
+%      |      false , otherwise
+
+checkValley([_],1,1).
+
+checkValley([H1,H2|T],_,0):-
+    H1 > H2,
+    checkValley([H2|T],1,0).
+
+checkValley([H1,H2|T],1,_):-
+    H1 =< H2,
+    checkValley([H2|T],1,1).
