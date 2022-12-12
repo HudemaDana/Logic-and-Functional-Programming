@@ -1,0 +1,38 @@
+#|| exercise 9b
+MATHEMATICAL MODEL
+
+replaceE(l1l2...ln, rl, e)=
+            (), if n=0
+            replaceE(l1, rl, e) U replaceE(l2...ln, rl, e), if l1 is a list
+            {rl} U replaceE(l2...ln, rl, e), if l1 = e
+            {l1} U replaceE(l2...ln, rl, e), otherwise
+|#
+
+(defun replaceE(l rl e)
+  (cond
+    ((null l) nil)
+    ((listp(car l))
+      (cons(replaceE (car l) rl e)(replaceE (cdr l) rl e)) )
+    ((eql (car l) e) 
+      (cons rl (replaceE (cdr l) rl e)))
+    (t (cons (car l)(replaceE (cdr l) rl e)))
+  )
+)
+
+#||
+----------------------------------------------
+
+TESTING TIME 
+
+----------------------------------------------
+|#
+
+(defun testReplaceE()
+  (assert
+    (and
+      (equal (replaceE '(1 2 (1 2) 3) '(1) 2) '(1 (1) (1 (1)) 3))
+      (equal (replaceE '(1 2 3) '() 2) '(1 () 3))
+      (equal (replaceE '() '(1 2 3) 4) '())
+    )
+  )
+)

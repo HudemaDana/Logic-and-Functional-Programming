@@ -1,0 +1,50 @@
+#||L2. exercise 15
+ MATHEMATICAL MODEL
+
+listsAppend(l1l2...ln, k1k2...km)=
+        k1k2...km, if n=0
+        {l1} U listsAppend(l2...ln, k1k2...km), otherwise
+
+|#
+
+(defun listsAppend(l k)
+  (cond
+    ((null l) k)
+    (t (cons (car l) (listsAppend(cdr l) k)))
+  )
+)
+
+#||
+MATHEMATICAL MODEL
+
+postOrder(l1l2l3)=
+      (), if n=0
+      postOrder(l2) U postOrder(l3) U postOrder(l1), otherwise
+
+where l1,l2,l3 are sublists of the list
+|#
+
+(defun postOrder(l)
+  (cond
+    ((null l) nil)
+    (t (listsAppend (postOrder (cadr l)) (listsAppend (postOrder (caddr l)) (list (car l)))))
+  )
+)
+
+#||
+----------------------------------------------
+
+TESTING TIME 
+
+----------------------------------------------
+|#
+
+(defun testL2()
+  (assert
+    (and
+      (equal (postOrder '(A (B)(C (D) (E)))) '(B D E C A))
+      (equal (postOrder '()) '())
+    )
+  )
+)
+

@@ -1,0 +1,39 @@
+#|| exercise 9a
+MATHEMATICAL MODEL
+
+merge-list(l1l2...ln, k1k2...km) = 
+            k1k2...km, if n=0
+            l1l2...ln, if m=0
+            {l1} U merge-list(l2...ln, k1k2...km), if l1<=k1
+            {k1} U merge-list(l1l2...ln, k2...km), otherwise
+|#
+
+(defun merge-list(l k)
+  (cond
+    ((null l) k)
+    ((null k) l)
+    ((<= (car l) (car k)) 
+      (cons(car l)(merge-list (cdr l) k)))
+
+    (t (cons(car k)(merge-list l (cdr k))))
+  )
+)
+
+
+#||
+----------------------------------------------
+
+TESTING TIME 
+
+----------------------------------------------
+|#
+
+(defun testMergeList()
+  (assert
+    (and
+      (equal (merge-list '(1 2 3) '(1 2 4)) '(1 1 2 2 3 4))
+      (equal (merge-list '(1 2 3) '()) '(1 2 3))
+      (equal (merge-list '() '()) '())
+    )
+  )
+)

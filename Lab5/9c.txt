@@ -1,0 +1,106 @@
+#||exercise 9c
+MATHEMATICAL MODEL
+
+listsAppend(l1l2...ln, k1k2...km)=
+        k1k2...km, if n=0
+        {l1} U listsAppend(l2...ln, k1k2...km), otherwise
+
+|#
+
+(defun listsAppend(l k)
+  (cond
+    ((null l) k)
+    (t (cons (car l) (listsAppend(cdr l) k)))
+  )
+)
+
+#|| 
+reverseNr(l1l2...ln)=
+        (), if n=0
+        listsAppend(reverseNr(l2...ln), reverseNr(l1)), if l1 is a list
+        listsAppend(reverseNr(l2...ln), list(l1)), otherwise
+
+|#
+
+(defun reverseNr(l)
+  (cond ((null l) nil)
+        ((listp (car l)) (listsAppend (reverseNr(cdr l)) (reverseNr(car l))))
+        (t (listsAppend (reverseNr(cdr l)) (list(car l))))
+  )
+)
+
+#|| 
+carry(e1,e2,c) = 
+      1, if (e1+e2+c)>9
+      0, otherwise
+|#
+
+(defun carry(e1 e2 c)
+  (cond
+    ((> (+(+ e1 e2)c) 9) 1)
+    (t 0)
+  )
+)
+
+#|| 
+lastDigit(e1, e2, c)=
+      (e1+e2+c)%10, if (e1+e2+c)>9
+      e1+e2+c, otherwise
+|#
+
+(defun lastDigit(e1 e2 c)
+  (cond
+    ((> (+(+ e1 e2) c) 9)
+      (mod(+(+ e1 e2) c) 10))
+    (t (+(+ e1 e2) c))
+  )
+)
+
+
+#|| 
+sumLists(l1l2...ln, k1k2...km, c, r)=
+                    r, if n=0 && m=0 && c=0
+                    c, if n=0 && m=0 && c!=0
+                    sumLists(l2...ln, k1k2...km, carry(l1, 0, c) lastDigit(l1, 0, c) U {r}), if m=0
+                    sumLists(l1l2...ln, k2...km, carry(0, k1, c) lastDigit(0, k1, c) U {r}), if n=0
+                    sumLists(l2...ln, k2...km, carry(l1, k1, c) lastDigit(l1, k1, c) U {r}), otherwise
+|#
+
+(defun sumLists(l k c r)
+  (cond
+    ((and (null l)(null k)(= 0 c)) r)
+    ((and (null l)(null k)(/= 0 c)) (cons c r))
+    ((null k) (sumLists (cdr l) k (carry (car l) 0 c) (cons (lastDigit (car l) 0 c) r)))
+    ((null l)   (sumLists l (cdr k) (carry 0 (car k) c) (cons (lastDigit 0 (car k) c) r)))
+    (t (sumLists (cdr l)(cdr k) (carry (car l)(car k) c) (cons (lastDigit (car l)(car k) c) r)))
+  )
+)
+
+#|| 
+mainSumLists(l1l2...ln, k1k2...km)=
+            sumLists(reverseNr(l1l2...ln), reverseNr(k1k2...km), 0 , ())
+|#
+
+(defun mainSumLists(l1 l2)
+  (cond
+    (t (sumLists (reverseNr l1) (reverseNr l2) 0 ()))
+  )
+)
+
+#||
+----------------------------------------------
+
+TESTING TIME 
+
+----------------------------------------------
+|#
+
+(defun testSumLists()
+  (assert
+    (and
+      (equal (mainSumLists '(1 2 3) '(1 2 4)) '(2 4 7))
+      (equal (mainSumLists '(1 2 3) '(9 9 9)) '(1 1 2 2))
+      (equal (mainSumLists '(1 2 (3 4) 5) '((1) 0 0 (1 2))) '(2 2 3 5 7))
+    )
+  )
+)

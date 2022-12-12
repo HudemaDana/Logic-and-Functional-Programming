@@ -1,0 +1,55 @@
+#||exercise 9d
+MATHEMATICAL MODEL
+
+MyGcd(a b) = 
+    0, if a!=number && b!=number
+    b, if a!=number
+    a, if b!=number
+    a, if a=b
+    MyGcd(a-b,b), if a>b
+    MyGcd(a,b-a), otherwise
+|#
+
+(defun MyGcd(a b)
+  (cond
+    ((and (not (numberp a)) (not (numberp b))) 0)
+    ((not (numberp a)) b)
+    ((not (numberp b)) a)
+    ((eql a b) a)
+    ((> a b)(MyGcd (- a b) b))
+    (t (MyGcd a (- b a)))  
+  )
+)
+
+#||
+gcdList(l1l2...ln)=
+        {l1} , if l1 is atom and n=1
+        MyGcd(gcdList(l1), gcdList(l2...ln)), if l1 is a list and n>1
+        MyGcd(l1, gcdList(l2...ln)), otherwise
+ |#
+
+(defun gcdList(l)
+  (cond
+    ((and (atom (car l))(null (cdr l))) (car l))
+    ((listp (car l)) (MyGcd (gcdList (car l))(gcdList (cdr l))))
+    (t (MyGcd (car l) (gcdList (cdr l))))
+  )
+)
+
+#||
+----------------------------------------------
+
+TESTING TIME 
+
+----------------------------------------------
+|#
+
+(defun testGcdList()
+  (assert
+    (and
+      (equal (gcdList '(a 24 (4 b) 6)) 4)
+      (equal (gcdList ()) 0)
+      (equal (gcdList(a b c(d (e)))) 0)
+    )
+  )
+)
